@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources> 
+    
+    <string name="menu_settings">Ρυθμίσεις</string>   
+    <string name="title_activity_directory_chooser">Επιλογή καταλόγου</string>
+    <string name="ok">ΟΚ</string>
+    <string name="cancel">Πίσω</string>
+    <string name="title_activity_songs_picker">Επιλογή τραγουδιών</string>
+    <string name="add">Πρόσθεση</string>
+    <string name="remove">Αφαίρεση</string>
+    <string name="ChooseDir">Επιλογή καταλόγου</string>
+    <string name="RemoveAll">Αφαίρεση όλων</string>
+    <string name="Add">Πρόσθεση</string>
+    <string name="LoadPlaylist">Φόρτωμα λίστας</string>
+    <string name="SavePlaylist">Αποθήκευση λίστας</string>
+    <string name="DeleteAll">Διαγραφή όλων</string>
+    <string name="title_activity_settings">Ρυθμίσεις</string>
+    <string name="action_settings">Ρυθμίσεις</string>
+    <string name="InitialDir">Αρχικός κατάλογος</string>   
+    <string name="menu_delete">Διαγραφή</string>
+    <string name="menu_properties">Ιδιότητες</string>     
+    <string name="CheckAll">Όλα ναι</string>
+    <string name="EnterPlaylistName">Εισαγωγή ονόματος λίστας</string>
+    <string name="AddToPlaylist">Πρόσθεση στη λίστα</string>
+    <string name="RemoveFromPlaylist">Αφαίρεση από τη λίστα</string>
+    <string name="ClearScreen">Καθαρισμός οθόνης</string>
+    <string name="UnCheckAll">Όλα όχι</string>
+    <string name="DeleteListItem">Διαγραφή αρχείου</string>
+    <string name="RemoveListItem">Αφαίρεση από τη λίστα</string>
+    <string name="PlayInRandom">Τυχαία αναπαραγωγή</string>
+    <string name="repeat">Επανάληψη</string>
+    <string name="menu">Μενού</string>
+    <string name="Info">Πληροφορίες</string>     
+    <string name="title_activity_load_playlist">Φόρτωμα λίστας</string>
+    <string name="title_activity_save_playlist">Αποθήκευση λίστας</string>	 
+	<string name="EnterPlaylist">Εισαγωγή λίστας</string>
+	<string name="Savingplaylist">Αποθήκευση λίστας</string>  
+	
+	<string name="repeatON">Επανάληψη ON</string>
+	<string name="repeatOFF">Επανάληψη OFF</string>	
+	<string name="noinfo">Δεν υπάρχουν πληροφορίες</string>	
+	<string name="UP">Πάνω</string>
+	
+	<string name="search_songs">Αναζήτηση</string>
+    <string name="search_hint">Ψάξε ένα τραγούδι</string>
+    <string name="no_results">Δε βρέθηκαν αποτελέσματα</string>
+    <string name="title_activity_results_picker">Αποτελέσματα</string>
+    
+    <string name="screen_setting">Λειτουργία οθόνης</string>
+    
+    <string name="delete_playlists">Διαγραφή λιστών</string>
+    <string name="title_activity_delete_playlists">Διαγραφή λιστών</string>
+    <string name="delete_pl_delete_bt">Διαγραφή</string>
+    <string name="delete_pl_cancel_bt">Πίσω</string>
+    
+    <string name="exit">Έξοδος</string>
+     
+    <string name="title_activity_number_picker">Επιλέξτε μέγεθος</string>
+    <string name="FontSize">Μέγεθος γραμματοσειράς</string>
+    <string name="FontSizeDefault">12</string>
+    <string name="back">Πίσω</string>
+    
+     <string name="setting_theme">Επιλογή θέματος</string>
+     
+     <string name="show_songs_images">Εμφάνιση εικόνων τραγουδιού</string>
+     
+      <string name="choose_seek_button_duration">Επιλογή διάρκειας κουμπιού αναζήτησης</string>
+    <string name="title_activity_number_picker_time_activity">Επιλογή διάρκειας κουμπιού αναζήτησης</string>
+    
+    <string name="bookmark_position">Μαρκάρισμα θέσης</string>
+    <string name="bookmark_go_title">Πήγαινε στο μαρκάρισμα</string>
+    <string name="bookmark_erase">Διαγραφή μαρκαρισμάτων</string>
+    
+    
+      <string name="general">Γενικά</string>
+    <string name="userinterface">Διεπαφή χρήστη</string>
+    <string name="playback">Αναπαραγωγή</string>
+    <string name="settings_SelectorSize">Μέγεθος επιλογέων</string>
+    <string name="sv">Εμφάνιση Visualizer</string>
+</resources>

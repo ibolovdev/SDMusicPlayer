@@ -1,0 +1,55 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="top"
+    android:orientation="vertical"
+    tools:context=".DirectoryChooserActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btUpDir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/UP" />
+
+        <TextView
+            android:id="@+id/txtCurrentDir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewDirectories"
+        android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+    </ListView>
+  
+    <LinearLayout
+        android:id="@+id/llCommands"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btOK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ok" />
+        
+         <Button
+             android:id="@+id/btCancel"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:text="@string/cancel" />
+         
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+ 
+  <PreferenceCategory android:title="@string/general">
+		       
+		<Preference android:key="init_dir" android:title="@string/InitialDir" android:defaultValue="@string/def_init_dir">
+    <intent android:action="startDirectoryChooserActivity" />           
+</Preference>
+
+			   
+    </PreferenceCategory>
+ 
+ 
+  <PreferenceCategory android:title="@string/userinterface">
+		
+		<ListPreference
+		        android:dependency="settings_screen"
+		        android:key="settings_screen"
+		        
+		        android:entries="@array/setting_screen_names"
+		        android:entryValues="@array/setting_screen_values"
+		         android:title="@string/screen_setting" android:defaultValue="@array/setting_screen_values"/>
+		
+		<Preference android:key="text_size" android:title="@string/FontSize" android:defaultValue="@string/FontSizeDefault">
+		    <intent android:action="startNumberPickerActivity" />           
+		</Preference>
+	  <ListPreference
+		  android:defaultValue="@array/setting_selected_selectorsize_values"
+		  android:dependency="settings_selectorSize"
+		  android:entries="@array/setting_selected_selectorsize_names"
+		  android:entryValues="@array/setting_selected_selectorsize_values"
+		  android:key="settings_selectorSize"
+		  android:title="@string/settings_SelectorSize" />
+	  <ListPreference android:entryValues="@array/setting_selected_theme_values" android:entries="@array/setting_selected_theme_names" android:defaultValue="@array/setting_selected_theme_values" android:key="settings_theme" android:title="@string/setting_theme" android:dependency="settings_theme"/>
+		<CheckBoxPreference android:key="ShowMp3Images" android:title="@string/show_songs_images"/>
+	  <CheckBoxPreference
+		  android:defaultValue="true"
+		  android:key="ShowVisualizer"
+		  android:title="@string/sv" />
+
+
+  </PreferenceCategory>
+ 
+  
+  <PreferenceCategory android:title="@string/playback">
+		<CheckBoxPreference android:key="play_in_random" android:title="@string/PlayInRandom"/>		       
+					   
+		<Preference android:key="seek_button_duration" android:title="@string/choose_seek_button_duration">
+		     <intent android:action="startNumberPickerTimeActivity" />
+		</Preference>
+    </PreferenceCategory> 
+
+</PreferenceScreen>

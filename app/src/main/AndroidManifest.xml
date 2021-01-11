@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ibo_android.sdmusicplayer"
+    android:versionCode="29"
+    android:versionName="1.7.8">
+
+    <application
+        android:name=".MyApplicationObject"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".DirectoryChooserActivity"
+            android:label="@string/title_activity_directory_chooser">
+            <intent-filter>
+                <action android:name="startDirectoryChooserActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".SongsPickerActivity"
+            android:label="@string/title_activity_songs_picker"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
+
+        <activity
+            android:name=".LoadPlaylistActivity"
+            android:label="@string/title_activity_load_playlist"></activity>
+        <activity
+            android:name=".SavePlaylist"
+            android:label="@string/title_activity_save_playlist"></activity>
+        <activity
+            android:name=".SavePlaylistActivity"
+            android:label="@string/title_activity_save_playlist"></activity>
+        <activity
+            android:name=".ResultsPickerActivity"
+            android:label="@string/title_activity_results_picker"></activity>
+        <activity
+            android:name=".DeletePlaylistsActivity"
+            android:label="@string/title_activity_delete_playlists"></activity>
+        <activity
+            android:name=".NumberPickerActivity"
+            android:label="@string/title_activity_number_picker"
+            android:theme="@android:style/Theme.Dialog">
+            <intent-filter>
+                <action android:name="startNumberPickerActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".NumberPickerTimeActivity"
+            android:label="@string/title_activity_number_picker_time_activity"
+            android:theme="@android:style/Theme.Dialog">
+            <intent-filter>
+                <action android:name="startNumberPickerTimeActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <receiver android:name=".PlayerIntentReceiver">
+            <intent-filter>
+                <action android:name="android.media.AUDIO_BECOMING_NOISY" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".PlayerIntentReceiverMusicButton">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".MusicPlayerService"
+            android:enabled="true" />
+    </application>
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ΜODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /-->
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="27" />
+
+</manifest>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources> 
+    
+    <string name="menu_settings">Paramètres</string>   
+    <string name="title_activity_directory_chooser">Sélection de dossier</string>
+    <string name="ok">ΟΚ</string>
+    <string name="cancel">Retour</string>
+    <string name="title_activity_songs_picker">Sélection de chansons</string>
+    <string name="add">Addition</string>
+    <string name="remove">Déduction</string>
+    <string name="ChooseDir">Sélection de dossier</string>
+    <string name="RemoveAll">Déduction tous</string>
+    <string name="Add">Addition</string>
+    <string name="LoadPlaylist">Charge de playlist</string>
+    <string name="SavePlaylist">Sauvegarder de playlist</string>
+    <string name="DeleteAll">Effacer tout</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="InitialDir">Dossier initiale</string>   
+    <string name="menu_delete">Effacer</string>
+    <string name="menu_properties">Propriétés</string>     
+    <string name="CheckAll">Tous oui</string>
+    <string name="EnterPlaylistName">Entrez playlist de noms</string>
+    <string name="AddToPlaylist">Ajouter à la playlist</string>
+    <string name="RemoveFromPlaylist">Enlever de la playlist</string>
+    <string name="ClearScreen">Nettoyage de l\'écran</string>
+    <string name="UnCheckAll">Toutes pas</string>
+    <string name="DeleteListItem">Supprimer le fichier</string>
+    <string name="RemoveListItem">Enlever de la playlist</string>
+    <string name="PlayInRandom">Reproduction aléatoire</string>
+    <string name="repeat">Répétition</string>
+    <string name="menu">Menu</string>
+    <string name="Info">Informations</string>     
+    <string name="title_activity_load_playlist">Charge playlist</string>
+    <string name="title_activity_save_playlist">Stockage playlist</string>	 
+	<string name="EnterPlaylist">Insérer playlist</string>
+	<string name="Savingplaylist">Stockage playlist</string>  
+	
+	<string name="repeatON">Répétition ON</string>
+	<string name="repeatOFF">Répétition OFF</string>	
+	<string name="noinfo">Informations ne existe pas</string>	
+	<string name="UP">Haut</string>
+	
+	<string name="search_songs">Recherche</string>
+    <string name="search_hint">Rechercher une chanson</string>
+    <string name="no_results">Aucun résultat</string>
+    <string name="title_activity_results_picker">Résultats</string>
+    
+    <string name="screen_setting">Mode écran</string>
+    
+    <string name="delete_playlists">Effacer de playlists</string>
+    <string name="title_activity_delete_playlists">Effacer de playlists</string>
+    <string name="delete_pl_delete_bt">Effacer</string>
+    <string name="delete_pl_cancel_bt">Retour</string>
+    
+    <string name="exit">Sortie</string>
+     
+    <string name="title_activity_number_picker">Choisissez une taille</string>
+    <string name="FontSize">Taille de la fonte</string>
+    <string name="FontSizeDefault">12</string>
+    <string name="back">Retour</string>
+    
+     <string name="setting_theme">Sélection des sujets</string>     
+     <string name="show_songs_images">Voir les photos de chanson</string>
+        
+      <string name="choose_seek_button_duration">Choisissez la durée de rechercher touche</string>
+    <string name="title_activity_number_picker_time_activity">Choisissez la durée de rechercher touche</string>
+    
+    <string name="bookmark_position">Marquez position</string>
+    <string name="bookmark_go_title">Allez a la marque</string>
+    <string name="bookmark_erase">Effacez la marque</string>
+    
+      <string name="general">Général</string>
+    <string name="userinterface">Interface utilisateur</string>
+    <string name="playback">Playback</string>
+    <string name="settings_SelectorSize">Taille du sélecteur</string>
+    <string name="sv">Voir Visualizer</string>
+    
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+ 
+  <PreferenceCategory android:title="@string/general">
+		       
+		<Preference android:key="init_dir" android:title="@string/InitialDir" android:defaultValue="@string/def_init_dir">
+	    	<intent android:action="startDirectoryChooserActivity" />           
+		</Preference>
+			   
+   </PreferenceCategory>
+    
+  
+  
+   <PreferenceCategory android:title="@string/userinterface">
+		       
+		 <ListPreference
+        android:dependency="settings_screen"
+        android:key="settings_screen"
+        
+        android:entries="@array/setting_screen_names"
+        android:entryValues="@array/setting_screen_values"
+         android:title="@string/screen_setting" android:defaultValue="@array/setting_screen_values"/>
+		
+		<!--  Preference android:key="text_size" android:title="@string/FontSize" android:defaultValue="@string/FontSizeDefault">
+		    <intent android:action="startNumberPickerActivity" />           
+		</Preference-->
+			   
+    </PreferenceCategory>
+    
+   
+    <PreferenceCategory android:title="@string/playback">
+		       
+		 <CheckBoxPreference android:key="play_in_random" android:title="@string/PlayInRandom"/>  
+			   
+    </PreferenceCategory> 
+
+</PreferenceScreen>

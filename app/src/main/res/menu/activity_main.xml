@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   
+    <item android:id="@+id/menu_settings"
+        android:title="@string/menu_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" >
+    </item>
+    <item android:id="@+id/add_songs" android:title="@string/AddToPlaylist" android:showAsAction="always"></item>
+    <item android:id="@+id/clear_screen" android:title="@string/ClearScreen"  ></item>
+    <item android:id="@+id/load_playlist" android:title="@string/LoadPlaylist"  ></item>
+    <item android:id="@+id/save_playlist" android:title="@string/SavePlaylist"  ></item>
+    <item android:id="@+id/delete_playlist" android:title="@string/delete_playlists"  ></item>
+    <item android:id="@+id/search_songs" android:title="@string/search_songs"  ></item>
+    <item android:id="@+id/exit" android:title="@string/exit"  ></item>
+  
+   
+</menu>

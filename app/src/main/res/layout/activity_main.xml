@@ -1,0 +1,110 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/lvSongsList"
+        android:layout_width="match_parent"
+        android:layout_height="443dp"
+        android:layout_weight="8"
+        android:saveEnabled="true"></ListView>
+
+
+    <LinearLayout
+        android:id="@+id/llWaveForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <com.ibo_android.sdmusicplayer.WaveformView
+            android:id="@+id/wfvMain"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.08" >
+
+
+
+        <Button
+            android:id="@+id/btBackward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/rewind" />
+
+        <Button
+            android:id="@+id/btPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/previous" />
+
+        <Button
+            android:id="@+id/btPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/play"
+            android:fadingEdge="horizontal" />
+
+        <Button
+            android:id="@+id/btNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/next" />
+
+        <Button
+            android:id="@+id/btForward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/forward" />
+
+        <Button
+            android:id="@+id/btMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/menu_ic_menu_moreoverflow_normal_holo_light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/txtCurrent"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="@string/seekbar_initbar"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/seekBarSong"
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.28" />
+
+        <TextView
+            android:id="@+id/txtTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seekbar_initbar"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

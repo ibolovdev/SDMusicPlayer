@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+    <string-array name="setting_screen_names">
+		<item>Par défaut</item>
+		<item>Sombre</item>
+		<item>Toujours ouvert</item>		 
+	</string-array>    
+</resources>
