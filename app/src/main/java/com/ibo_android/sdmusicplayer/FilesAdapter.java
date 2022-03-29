@@ -1,6 +1,8 @@
 package com.ibo_android.sdmusicplayer;
 
-import java.util.ArrayList; 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
+import java.util.ArrayList;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -232,15 +234,27 @@ public class FilesAdapter extends BaseAdapter
 				//this._nowplaying = null;
 				
 			}	//getmusicfilesFromPlaylist
-			
-			public void DataSetChanged()
+
+	public void DataSetChanged()
+	{
+		this.notifyDataSetChanged();
+		if (_MusicSrvBinder != null)
+		{
+			if (mfiles.size() < 1000)//it seems that there is a limit on the size that a intent can have
 			{
-				this.notifyDataSetChanged();
-				if (_MusicSrvBinder != null)
-				{
-					_MusicSrvBinder.mfiles = mfiles;
-				}				
+				_MusicSrvBinder.mfiles = mfiles;
 			}
+			else
+			{
+				MyApplicationObject mApplication = (MyApplicationObject) this._act.get().getApplicationContext();
+				mApplication.setSelectedFiles(null);
+				mApplication.setSelectedFiles(mfiles);
+				_MusicSrvBinder.GetFilesFromApplicationContext();
+			}
+
+		}
+
+	}
 			
 			public void DeletePlaylists(ArrayList<String> pls)
 			{			
@@ -255,6 +269,13 @@ public class FilesAdapter extends BaseAdapter
 				if(_MusicSrvBinder == null)
 				{
 					mfiles.clear();				 
+					_nowplaying = null;
+					return;
+				}
+
+				if(_MusicSrvBinder._mp == null)
+				{
+					mfiles.clear();
 					_nowplaying = null;
 					return;
 				}
@@ -483,8 +504,14 @@ public class FilesAdapter extends BaseAdapter
 				            0,
 				            PendingIntent.FLAG_UPDATE_CURRENT
 				        );*/
-				
-				PendingIntent pin = PendingIntent.getActivity(_act.get(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+				int IntentFlagIn = PendingIntent.FLAG_UPDATE_CURRENT;
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+				{
+					IntentFlagIn = PendingIntent.FLAG_UPDATE_CURRENT|FLAG_IMMUTABLE;
+				}
+
+				PendingIntent pin = PendingIntent.getActivity(_act.get(), 0, resultIntent,IntentFlagIn);
 			 
 				mBuilder.setContentIntent(pin);
 			//	mBuilder.setDeleteIntent(intent)
@@ -1981,7 +2008,7 @@ public class FilesAdapter extends BaseAdapter
 			return;
 		}
 		
-		if (mfiles.size() < pos )
+		if (mfiles.size() < pos + 1 )
 			return;
 		
 		  MusicFile mfile = mfiles.get(pos);
@@ -2343,6 +2370,22 @@ public class FilesAdapter extends BaseAdapter
 				/// btPlay.setText("play");
 				//btPlay.setCompoundDrawablesWithIntrinsicBounds(_con.getResources().getDrawable(R.drawable.play), null, null, null);
 				break;
+		}
+
+	}
+
+
+	public MusicFile SearchMusicFile(MusicFile mf)
+	{
+		MusicFile foundmf = MusicFile.Search( mfiles, mf);
+		if (foundmf == null)
+		{
+			mfiles.add(mf);
+			return mf;
+		}
+		else
+		{
+			return foundmf;
 		}
 
 	}
