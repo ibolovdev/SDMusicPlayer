@@ -23,14 +23,17 @@ import android.widget.TextView;
 public class DirectoryChooserAdapter extends BaseAdapter {
 
 	public ArrayList<MusicFile> mfiles;
-	private String _rootdir;
-	private LayoutInflater minfl;	 
+	protected String _rootdir;
+	protected LayoutInflater minfl;
 	public String selectedDirectory;
-	 SharedPreferences prefs ;
+	protected SharedPreferences prefs ;
 	public ListView _fileslist;
 	public WeakReference<DirectoryChooserActivity>  _act;
-	 
-	 		public class DirectoryViewHolder
+
+	public DirectoryChooserAdapter() {
+	}
+
+	public class DirectoryViewHolder
 			{
 				MusicFile DirectoryName;
 				TextView mTitle;
