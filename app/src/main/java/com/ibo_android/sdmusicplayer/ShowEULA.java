@@ -344,6 +344,47 @@ import android.preference.PreferenceManager;
 //media buttons do not work - registerMediaButtonEventReceiver deprecated
 //New implementation of ListFiles, ok
 
+//14-05-21
+// music through deaf people through vibration
+
+//16-01-22
+//check music error
+//add german, italian, russian translations
+//add ads, rejected
+//remove delete file or fix it, removed
+//remove unnecessary permissions
+//bugs
+// explain RECORD_AUDIO
+// submit data safety form -> App Content
+//multiple bookmarks
+
+
+/* received 19/1/22
+
+Hello Google Play Developer,
+
+As we shared last year, users will start seeing the new Data safety section in your app’s store listing in February. With this feature, you’ll have a clear way to show your users how you keep their data safe and explain what data your app collects and why. Over 300,000 apps already have their forms approved.
+
+Action required:
+
+Complete your Data safety form and make sure you added a privacy policy. You can find both of these forms at App Content in your Google Play Console.
+Submit for review. You do not need to include an app update for this submission.
+If your form is rejected, please make the requested changes and resubmit.
+Users will see “No information available” in your Data safety section until your form is approved, so we encourage you to complete this process soon. April is the deadline to have your form approved. After this, your new app submission or app updates may be rejected. There may also be additional enforcement actions in the future.
+
+How to get ready:
+
+Visit the Help Center for more on providing app privacy and security details in Play Console, including data type lists.
+Review how your app collects, protects and shares data. Get a walkthrough of how to fill out the form in our Play Academy course.
+Review the policy requirements on our Policy Center or watch July PolicyBytes.
+Thank you for continuing to partner with us to make Google Play a trustworthy platform for you and your users.
+
+Thank you,
+
+The Google Play team
+
+ */
+
 public class ShowEULA {
 		
 	public static final  String EULA_PREFIX = "eula_";
