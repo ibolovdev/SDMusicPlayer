@@ -1,5 +1,8 @@
 package com.ibo_android.sdmusicplayer;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.app.PendingIntent.FLAG_MUTABLE;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -271,31 +274,33 @@ public class MusicPlayerService extends Service
 		return super.onUnbind(intent);	
 			  
 	}
-	
+
 	public void PlayThisSong(String songpath)
 	{
 		if(songpath == "")
 			return;
-		
+
 		File f = new File(songpath);
-		MusicFile mf = new  MusicFile("", f.getName(),f.getAbsolutePath(),0); 					
-	
-	///	Collections.sort(fa.mfiles);
-		 
-			//mfiles.add(mf);
-		 	if (GetFileAdapter() != null)
-		 	{
-		 		MusicFile foundmf = MusicFile.Search(_fa.get().mfiles, mf);
+		MusicFile mf = new  MusicFile("", f.getName(),f.getAbsolutePath(),0);
+
+		///	Collections.sort(fa.mfiles);
+
+		//mfiles.add(mf);
+		if (GetFileAdapter() != null)
+		{
+		 		/*MusicFile foundmf = MusicFile.Search(_fa.get().mfiles, mf);
 		 		if (foundmf == null)
 		 			_fa.get().mfiles.add(mf);
+
 		 		else
-		 			mf = foundmf;
-				
-				_fa.get().PlayStop(null, mf, false);
-					
-		 	}			
-			
-				
+		 			mf = foundmf;*/
+
+			MusicFile foundmf =_fa.get().SearchMusicFile(mf);
+
+			_fa.get().PlayStop(null, foundmf, false);
+
+		}
+
 	}
 	  /*  public int getRandomNumber() {
 		
@@ -318,6 +323,7 @@ public class MusicPlayerService extends Service
 			 
 			  mp.start(); 
 			  startForeground();
+				_mp = mp;
 
 			if (_nowplaying != null)
 			  _nowplaying.bInError = 0;
@@ -337,8 +343,10 @@ public class MusicPlayerService extends Service
  								 _fa.get()._act.get().SetPaused();
  								_fa.get()._act.get().updateSeekBar(false);
 								 // _fa.get().startVisualiser(_mp.getAudioSessionId());
-								  _fa.get().startVisualiserThis(_mp.getAudioSessionId(),null);
- 							  }						
+								  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+									  _fa.get().startVisualiserThis(_mp.getAudioSessionId(),null);
+								  }
+							  }
  				        	
  				         }
  				     });
@@ -606,12 +614,17 @@ public class MusicPlayerService extends Service
 			
 			RemoteViews myRemoteView;
 
-
-
 			ResetMediaPlayer(this);
+
+			int IntentFlag = 0;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+			{
+				IntentFlag = FLAG_IMMUTABLE;
+			}
 			
 			if(this._mp.isPlaying())
-			{				
+			{
+
 				myRemoteView = new RemoteViews(this.getPackageName(),R.layout.notification_custom_view_paused);
 				//style="?android:attr/borderlessButtonStyle" requires API level 11
 				myRemoteView.setImageViewResource(R.id.img_not_paused, R.drawable.ic_launcher);
@@ -619,27 +632,27 @@ public class MusicPlayerService extends Service
 				 
 				
 				Intent newIntent = new Intent("PLAY_STOP");
-				PendingIntent newPendingIntent = PendingIntent.getBroadcast(this, 2, newIntent, 0);
+				PendingIntent newPendingIntent = PendingIntent.getBroadcast(this, 2, newIntent, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_pause, newPendingIntent);
 								
 				Intent newIntentBack = new Intent("PLAY_BACK");
-				PendingIntent newPendingIntentBack = PendingIntent.getBroadcast(this, 2, newIntentBack, 0);
+				PendingIntent newPendingIntentBack = PendingIntent.getBroadcast(this, 2, newIntentBack, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_back_paused, newPendingIntentBack);
 				
 				Intent newIntentFor = new Intent("PLAY_FOR");
-				PendingIntent newPendingIntentFor = PendingIntent.getBroadcast(this, 2, newIntentFor, 0);
+				PendingIntent newPendingIntentFor = PendingIntent.getBroadcast(this, 2, newIntentFor, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_for_pause, newPendingIntentFor);		
 				
 				Intent newIntentPrevious = new Intent("PLAY_PREVIOUS");
-				PendingIntent newPendingIntentPrevious = PendingIntent.getBroadcast(this, 2, newIntentPrevious, 0);
+				PendingIntent newPendingIntentPrevious = PendingIntent.getBroadcast(this, 2, newIntentPrevious, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_prev_paused, newPendingIntentPrevious);		
 				
 				Intent newIntentNext = new Intent("PLAY_NEXT");
-				PendingIntent newPendingIntentNext = PendingIntent.getBroadcast(this, 2, newIntentNext, 0);
+				PendingIntent newPendingIntentNext = PendingIntent.getBroadcast(this, 2, newIntentNext, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_next_paused, newPendingIntentNext);		
 				
 				Intent newIntentClear = new Intent("CLEAR_NOTIFICATION");
-				PendingIntent newPendingIntentClear = PendingIntent.getBroadcast(this, 2, newIntentClear, 0);
+				PendingIntent newPendingIntentClear = PendingIntent.getBroadcast(this, 2, newIntentClear, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_close_paused, newPendingIntentClear);		
 				
 				
@@ -653,27 +666,27 @@ public class MusicPlayerService extends Service
 				myRemoteView.setTextViewText(R.id.txt_not_title, Title);
 				
 				Intent newIntent = new Intent("PLAY_STOP");
-				PendingIntent newPendingIntent = PendingIntent.getBroadcast(this, 2, newIntent, 0);
+				PendingIntent newPendingIntent = PendingIntent.getBroadcast(this, 2, newIntent, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_play, newPendingIntent);
 								
 				Intent newIntentBack = new Intent("PLAY_BACK");
-				PendingIntent newPendingIntentBack = PendingIntent.getBroadcast(this, 2, newIntentBack, 0);
+				PendingIntent newPendingIntentBack = PendingIntent.getBroadcast(this, 2, newIntentBack, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_back, newPendingIntentBack);
 				
 				Intent newIntentFor = new Intent("PLAY_FOR");
-				PendingIntent newPendingIntentFor = PendingIntent.getBroadcast(this, 2, newIntentFor, 0);
+				PendingIntent newPendingIntentFor = PendingIntent.getBroadcast(this, 2, newIntentFor, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_for, newPendingIntentFor);
 				
 				Intent newIntentPrevious = new Intent("PLAY_PREVIOUS");
-				PendingIntent newPendingIntentPrevious = PendingIntent.getBroadcast(this, 2, newIntentPrevious, 0);
+				PendingIntent newPendingIntentPrevious = PendingIntent.getBroadcast(this, 2, newIntentPrevious, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_previous, newPendingIntentPrevious);		
 				
 				Intent newIntentNext = new Intent("PLAY_NEXT");
-				PendingIntent newPendingIntentNext = PendingIntent.getBroadcast(this, 2, newIntentNext, 0);
+				PendingIntent newPendingIntentNext = PendingIntent.getBroadcast(this, 2, newIntentNext, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_next, newPendingIntentNext);		
 				
 				Intent newIntentClear = new Intent("CLEAR_NOTIFICATION");
-				PendingIntent newPendingIntentClear = PendingIntent.getBroadcast(this, 2, newIntentClear, 0);
+				PendingIntent newPendingIntentClear = PendingIntent.getBroadcast(this, 2, newIntentClear, IntentFlag);
 				myRemoteView.setOnClickPendingIntent(R.id.bt_not_close, newPendingIntentClear);		
 							
 			}
@@ -745,8 +758,14 @@ public class MusicPlayerService extends Service
 			            0,
 			            PendingIntent.FLAG_UPDATE_CURRENT
 			        );*/
+
+			int IntentFlagIn = PendingIntent.FLAG_UPDATE_CURRENT;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+			{
+				IntentFlagIn = PendingIntent.FLAG_UPDATE_CURRENT|FLAG_IMMUTABLE;
+			}
 			
-			PendingIntent pin = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pin = PendingIntent.getActivity(this, 0, resultIntent, IntentFlagIn);
 		 
 			mBuilder.setContentIntent(pin);
 		//	mBuilder.setDeleteIntent(intent)
@@ -918,7 +937,15 @@ public class MusicPlayerService extends Service
 		}//DeleteNotification
 
 
+	public void  GetFilesFromApplicationContext()
+	{
 
+		MyApplicationObject mApp = (MyApplicationObject)getApplicationContext();
+		ArrayList<MusicFile> selectedsongsFromCache  = mApp.getSelectedFiles();
+
+		mfiles = selectedsongsFromCache;
+
+	}
 
 		
 
