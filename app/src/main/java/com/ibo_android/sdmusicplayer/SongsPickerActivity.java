@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-
-import com.ibo_android.sdmusicplayer.R;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -24,11 +21,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SongsPickerActivity extends Activity {
 
 	private ListView fileslist;
 	private SongsPickerAdapter psa;
+
+	//private SongsPickersContentProviderStrategy psa;
+
 	private String _root_dir = "";
 
 	private static final String SONGS_CATALOG = "SONGS_CATALOG";
@@ -54,7 +55,20 @@ public class SongsPickerActivity extends Activity {
 
 		// Toast.makeText(this, sel, Toast.LENGTH_LONG).show();
 
-		psa = new SongsPickerAdapter(MusicDir, this, selfiles_asparam);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+		{
+			psa = new SongsPickerContentProviderStrategy(MusicDir, this, selfiles_asparam);
+		}
+		else
+		{
+			psa = new SongsPickerAdapter(MusicDir, this, selfiles_asparam);
+		}
+
+		if (psa.mfiles.isEmpty())
+		{
+			Toast.makeText(this, R.string.no_files, Toast.LENGTH_LONG).show();
+		}
 
 		fileslist = (ListView) findViewById(R.id.lvIckSongList);
 	//	 Collections.sort(psa.mfiles);
@@ -79,6 +93,16 @@ public class SongsPickerActivity extends Activity {
 				
 				for (Object omf : psa.selectedfiles.toArray()) {
 					MusicFile typedmf = (MusicFile) omf;
+
+					if (typedmf == null)
+						continue;
+
+					if (typedmf.filepath.equals("") )
+						continue;
+
+					if (typedmf.filepath == null )
+						continue;
+
 					File fu = new File(typedmf.filepath);
 					if (fu.isDirectory()) {
 						psa.selectedfiles.remove(typedmf);
