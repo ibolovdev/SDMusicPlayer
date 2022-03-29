@@ -3,6 +3,7 @@ package com.ibo_android.sdmusicplayer;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -12,10 +13,12 @@ public class MusicFile implements Parcelable, Comparable<MusicFile>
 	String title;
 	String filepath;
 	public byte bIsRootDirectory = 0;
+
 	int CurrentPosition = 0;
 	public byte bRepeat = 0;
 	public byte bInError = 0;
-	int seqnum = 0; 
+	int seqnum = 0;
+	public byte bIsDirectory = 0;
 	
 	public MusicFile (String cod, String tlt, String fpath, int seqnumber)
 	{	 
@@ -56,6 +59,7 @@ public class MusicFile implements Parcelable, Comparable<MusicFile>
 		 dst.writeByte(bRepeat);
 		 dst.writeByte(bInError);
 		 dst.writeInt(seqnum);
+		 dst.writeByte(bIsDirectory);
 		 
 		 
 	} 
@@ -69,6 +73,7 @@ public class MusicFile implements Parcelable, Comparable<MusicFile>
           bRepeat = in.readByte();
           bInError = in.readByte();
           seqnum = in.readInt();
+		  bIsDirectory = in.readByte();
   }	 
 
 	/*public int compareTo(MusicFile another) {
@@ -89,14 +94,38 @@ public class MusicFile implements Parcelable, Comparable<MusicFile>
 
 	public int compareTo(MusicFile another) {
 
-		File f_this = new File(this.filepath);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+		{
+			if ((this.bIsDirectory == 1) && !(another.bIsDirectory == 1) )
+				return -1;
+
+			if (!(this.bIsDirectory == 1) && (another.bIsDirectory == 1))
+				return 1;
+
+		}
+		else
+		{
+			File f_this = new File(this.filepath);
+			File f_another = new File(another.filepath);
+
+			if (isDirectory(f_this) && !isDirectory(f_another))
+				return -1;
+
+			if (!isDirectory(f_this) && isDirectory(f_another))
+				return 1;
+
+		}
+
+
+
+		/*File f_this = new File(this.filepath);
 		File f_another = new File(another.filepath);
 
 		if (isDirectory(f_this) && !isDirectory(f_another))
 			return -1;
 
 		if (!isDirectory(f_this) && isDirectory(f_another))
-			return 1;
+			return 1;*/
 
 		return this.filepath.compareTo(another.filepath);
 
