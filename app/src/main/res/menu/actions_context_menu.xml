@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/cmenu_delete" android:title="@string/DeleteListItem">
-    </item>
+    <!--item android:id="@+id/cmenu_delete" android:title="@string/DeleteListItem"></item-->
     <item android:id="@+id/cmenu_removefromlist" android:title="@string/RemoveListItem"></item>
     <item android:id="@+id/cmenu_repeat" android:title="@string/repeat"></item>
     <item android:id="@+id/cmenu_info" android:title="@string/Info"></item>
