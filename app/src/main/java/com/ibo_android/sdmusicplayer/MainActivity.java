@@ -45,6 +45,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -128,6 +129,7 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 	private boolean mBoundSrv = false;
 	private MusicFile mfToPlayWhenServIsReady = null;
 	private MusicPlayerService MusicSrvBinder = null;
+	private FileSystemProvider _FileSystemProvider = null;
 
 	private ServiceConnection MusicSrvConn = new ServiceConnection() {
 		public void onServiceConnected(ComponentName name, IBinder service) {
@@ -288,8 +290,8 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		// String MUSIC_DIR = "" ;//= "/music/comp/";
 		
 		//ActionBar ab = this.getActionBar();
-		 
-		
+
+		_FileSystemProvider = new FileSystemProvider(this);
 		RequestPermissions();
 		
 		SharedPreferences prefs = PreferenceManager
@@ -340,16 +342,53 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		startService(i);
 		
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+
 	
 		boolean bSD_HANDLED = this.getIntent().getBooleanExtra("SD_HANDLED",false);
-		if (Intent.ACTION_VIEW.equals(getIntent().getAction()))//when someone selects a file from another app like file explorer
+		if (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getData() != null)//when someone selects a file from another app like file explorer
 		{			
 			 
-				String path = getIntent().getData().getPath();
+			/*	String path = getIntent().getData().getPath();
 				File f = new File(path);		
 			
 				MUSIC_DIR = f.getParent();
-				latest_playlist = "";				
+				latest_playlist = "";*/
+
+			String path = getIntent().getData().getPath();
+
+			path = GetFile(path);
+
+			//BitmapCache bc = new BitmapCache();
+			FileNode fn = null;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+			{
+				FileNodeComposite MfilesComp = _FileSystemProvider.getmusicfilesFromContentProvider();
+				if(MfilesComp!= null)
+				{
+					if (fn!=null)
+					{
+						fn = _FileSystemProvider.GetCompositeByFileName(path,MfilesComp);
+						//File f = new File(path);
+
+						//fa = new FilesAdapter(this, fn.parent.FullPath(), null, "", _dba,MusicSrvBinder);
+
+						MUSIC_DIR = fn.parent.FullPath();
+						latest_playlist = "";
+
+					}//if (fn!=null)
+
+				}//if(MfilesComp!= null)
+
+			}
+			else
+			{
+
+				File f = new File(path);
+
+				MUSIC_DIR = f.getParent();
+				latest_playlist = "";
+			}
 			 
 					
 		}//if (this.getIntent().getAction() == "android.intent.action.VIEW")
@@ -389,21 +428,52 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		  retainFragment.mRetainedCache = fa.bc;
 		
 
-		if (Intent.ACTION_VIEW.equals(getIntent().getAction()))//when someone selects a file from another app like file explorer
+		if (Intent.ACTION_VIEW.equals(getIntent().getAction()) && getIntent().getData() != null)//when someone selects a file from another app like file explorer
 		{			
 			if(!bSD_HANDLED)
 			{
-				String path = getIntent().getData().getPath();
-				File f = new File(path);		 
-				
-				ArrayList<MusicFile>  mfs = fa.SearchFiles(f.getName(), false, true);
-				if (mfs.size() > 0)
-				{					 
-					mfToPlayWhenServIsReady =  mfs.get(0);
-					getIntent().putExtra("SD_HANDLED", true);
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+				{
+
+					String path = getIntent().getData().getPath();
+					path = GetFile(path);
+
+					FileNodeComposite MfilesComp = _FileSystemProvider.getmusicfilesFromContentProvider();
+					if (MfilesComp!= null)
+					{
+
+						FileNode fn = _FileSystemProvider.GetCompositeByFileName(path,MfilesComp);
+						if (fn != null)
+						{
+							ArrayList<MusicFile>  mfs  = fa.SearchFiles(fn.Display(), false, true);
+
+							if (mfs.size() > 0)
+							{
+								mfToPlayWhenServIsReady =  mfs.get(0);
+								getIntent().putExtra("SD_HANDLED", true);
+							}
+
+						}//if (fn != null)
+
+					}//	if (MfilesComp!= null)
 
 				}
-			}					 
+				else
+				{
+					String path = getIntent().getData().getPath();
+					File f = new File(path);
+
+					ArrayList<MusicFile>  mfs = fa.SearchFiles(f.getName(), false, true);
+
+					if (mfs.size() > 0)
+					{
+						mfToPlayWhenServIsReady =  mfs.get(0);
+						getIntent().putExtra("SD_HANDLED", true);
+					}
+				}//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+
+			}//if(!bSD_HANDLED)
 				
 		}//if (this.getIntent().getAction() == "android.intent.action.VIEW")
 
@@ -784,9 +854,9 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 				Manifest.permission.WRITE_EXTERNAL_STORAGE)
 				!= PackageManager.PERMISSION_GRANTED;
 
-	/*	boolean breadExStorageNotGranted = ContextCompat.checkSelfPermission(this,
+		boolean breadExStorageNotGranted = ContextCompat.checkSelfPermission(this,
 				Manifest.permission.READ_EXTERNAL_STORAGE)
-				!= PackageManager.PERMISSION_GRANTED;*/
+				!= PackageManager.PERMISSION_GRANTED;
 
 		boolean bRecordAudioNotGranted = ContextCompat.checkSelfPermission(this,
 				Manifest.permission.RECORD_AUDIO)
@@ -794,11 +864,13 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 
 
 		// Here, thisActivity is the current activity
-		if (bWriteExStorageNotGranted || bRecordAudioNotGranted ) {
+		if (bWriteExStorageNotGranted || bRecordAudioNotGranted || breadExStorageNotGranted ) {
 
 		    // Should we show an explanation?
 		    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
 		            Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+					ActivityCompat.shouldShowRequestPermissionRationale(this,
+							Manifest.permission.READ_EXTERNAL_STORAGE) ||
 					ActivityCompat.shouldShowRequestPermissionRationale(this,
 							Manifest.permission.RECORD_AUDIO)    ) {
 
@@ -826,7 +898,7 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		        // No explanation needed, we can request the permission.
 
 		        ActivityCompat.requestPermissions(this,
-		                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO },
+		                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO },
 		                MY_PERMISSIONS_PERMISSIONS_MULTIPLE_REQUEST);
 
 		        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
@@ -834,6 +906,19 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		        // result of the request.
 		    }
 		}
+
+	/*	if (Build.VERSION.SDK_INT > 29)
+		{
+			if (Environment.isExternalStorageManager()) {
+				//todo when permission is granted
+			} else {
+				//request for the permission
+				Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+				Uri uri = Uri.fromParts("package", getPackageName(), null);
+				intent.setData(uri);
+				startActivity(intent);
+			}
+		}*/
 			
 		
 	}//RequestPermissions
@@ -1418,7 +1503,7 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 
 	}
 
-	private void handleIntent(Intent intent) {
+	private void handleIntent(Intent intent)  {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 
@@ -1436,19 +1521,81 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		}// if (Intent.ACTION_SEARCH.equals(intent.getAction()))
 		
 		//if (this.getIntent().getAction() == "android.intent.action.VIEW")//this does not work on 2.3.3
-		if (Intent.ACTION_VIEW.equals(intent.getAction()))
-		{			
-			String path = getIntent().getData().getPath();
-			File f = new File(path);	
+		if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null)
+		{
+
+			/*
+			api 29 - /document/100A-3102:Music/110.20-02-22.mp3
+
+			api30 - /external/audio/media/5520   samsung
+			 */
+
+			/*
+			api 29 - /document/100A-3102:Music/110.20-02-22.mp3
+
+			api30 - /external/audio/media/5520   samsung
+
+			api30 - /document/15FA-4506:Music/skai/27.12-07-20.mp3  emulator - work
+
+			api31 - /document/audio:59   emulator - work
+
+			same machine
+			api32 - /document/1015-1E1C:Music/16 - We Will Rock You.mp3 - work
+			api32 - /document/audio:33
+
+			Api28
+			/document/audio:46
+			/document/primary:Music/01 - A Kind Of Magic.mp3
+
+			 */
+
+			String path = intent.getData().getPath();
+			//String path = getIntent().getData().getPath();
+
+		//	File filePath = new File(this.getContentResolver().openFileDescriptor(getIntent().getData(), "r"));
+			path = GetFile(path);
 			
 			//BitmapCache bc = new BitmapCache();
-			fa = new FilesAdapter(this, f.getParent(), null, "", _dba,MusicSrvBinder);
+			FileNode fn = null;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+			{
+				FileNodeComposite MfilesComp = _FileSystemProvider.getmusicfilesFromContentProvider();
+				if(MfilesComp==null)
+					return;
+
+				  fn = _FileSystemProvider.GetCompositeByFileName(path,MfilesComp);
+				  if(fn==null)
+				  	return;
+
+				//File f = new File(path);
+				fa = new FilesAdapter(this, fn.parent.FullPath(), null, "", _dba,MusicSrvBinder);
+
+			}
+			else
+			{
+				File f = new File(path);
+				fa = new FilesAdapter(this, f.getParent(), null, "", _dba,MusicSrvBinder);
+			}
+
+
+			//fa = new FilesAdapter(this, f.getParent(), null, "", _dba,MusicSrvBinder);
 			fileslist = (ListView) findViewById(R.id.lvSongsList);
 			fileslist.setAdapter(fa);
 		
+
 			fa._fileslist = fileslist;
-			
-			ArrayList<MusicFile>  mfs = fa.SearchFiles(f.getName(), false, true);
+			ArrayList<MusicFile>  mfs = null;
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+			{
+				  mfs = fa.SearchFiles(fn.Display(), false, true);
+			}
+			else
+			{
+				File f = new File(path);
+		  		mfs = fa.SearchFiles(f.getName(), false, true);
+			}
+
 			if (mfs.size() > 0)
 			{						
 				//int idx =  fa.mfiles.indexOf(mfs.get(0));
@@ -1466,6 +1613,48 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		
 		
 	}// handleIntent
+
+	private String GetFile(String path)
+	{
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+		{
+
+			String[] split = path.split(":");
+			String selection = "_id=?";
+			String[] selectionArgs = new String[]{
+			            split[1]};
+
+
+			Cursor cursor = this.getContentResolver().query(
+					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+					null,
+					selection,
+					selectionArgs,
+					null);
+
+			while (cursor.moveToNext())
+			{
+				String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+
+				String fullpath = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+				String kk = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+
+			 	return fullpath;
+
+			}
+
+		}
+		else
+		{
+			 return path;
+		}
+
+			return "";
+	}
+
+
 
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -2738,7 +2927,7 @@ public void SetPlayed2() {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.actions_context_menu, menu);
 
-		MenuItem iDelete = menu.findItem(R.id.cmenu_delete);
+	//	MenuItem iDelete = menu.findItem(R.id.cmenu_delete);
 		MenuItem iRemove = menu.findItem(R.id.cmenu_removefromlist);
 		MenuItem iRepeat = menu.findItem(R.id.cmenu_repeat);
 
@@ -2753,7 +2942,7 @@ public void SetPlayed2() {
 
 			if (mf.equals(fa._nowplaying))
 			{
-				iDelete.setVisible(false);
+				//iDelete.setVisible(false);
 				iRemove.setVisible(false);
 
 				if (fa._nowplaying.bRepeat == 0) {
@@ -2791,9 +2980,9 @@ public void SetPlayed2() {
 
 		switch (item.getItemId()) {
 		
-				case R.id.cmenu_delete:
-					cmenuDeleteFile(info);
-					return true;
+				//case R.id.cmenu_delete:
+				//	cmenuDeleteFile(info);
+				//	return true;
 				case R.id.cmenu_removefromlist:
 					cmenuRemoveFromList(info);
 					return true;
