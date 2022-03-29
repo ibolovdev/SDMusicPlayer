@@ -2,6 +2,7 @@ package com.ibo_android.sdmusicplayer;
 
 import com.ibo_android.sdmusicplayer.R;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -13,7 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
- 
+import android.widget.Toast;
+
 
 public class DirectoryChooserActivity extends Activity {	
 	
@@ -49,6 +51,21 @@ public class DirectoryChooserActivity extends Activity {
 	        
 		
 		psa = new DirectoryChooserAdapter(this, MUSIC_DIR );
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+		{
+			psa = new DirectoryChooserContentProviderStrategyAdapter(this, MUSIC_DIR );
+		}
+		else
+		{
+			psa = new DirectoryChooserAdapter(this, MUSIC_DIR );
+
+		}
+
+		if (psa.mfiles.isEmpty())
+		{
+			Toast.makeText(this, R.string.no_files, Toast.LENGTH_LONG).show();
+		}
 
 		fileslist = (ListView) findViewById(R.id.listViewDirectories);
 
