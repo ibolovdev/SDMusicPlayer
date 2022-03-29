@@ -8,8 +8,10 @@ import java.util.Collections;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -21,21 +23,26 @@ import android.widget.ListView;
 
 import android.widget.TextView;
 
+import org.w3c.dom.Node;
 
-public class SongsPickerAdapter extends BaseAdapter {
+
+public class SongsPickerAdapter extends BaseAdapter implements SongsPickerSetRootDirectory{
 
     public LayoutInflater minfl;
     //private Context _con;
 
     public ArrayList<MusicFile> mfiles;
-    private String _rootdir;
+    protected String _rootdir;
     public    ArrayList<MusicFile> selectedfiles;
     public WeakReference<SongsPickerActivity> _act;
-    private ArrayList<String> _allowableFormats;
+    protected ArrayList<String> _allowableFormats;
 
-    private String _RootDirectory = "";
+    protected String _RootDirectory = "";
     public ListView fileslist;
     SharedPreferences prefs;
+
+    public SongsPickerAdapter() {
+    }
 
     public String getRootDirectory() {
         return _RootDirectory;
@@ -74,6 +81,22 @@ public class SongsPickerAdapter extends BaseAdapter {
 
         _allowableFormats = new ArrayList<String>();
         _allowableFormats.add("mp3");
+        _allowableFormats.add("flac");
+        _allowableFormats.add("wma");
+        _allowableFormats.add("aac");
+        _allowableFormats.add("aif");
+        _allowableFormats.add("iff");
+        _allowableFormats.add("m4a");
+        _allowableFormats.add("m4b");
+        _allowableFormats.add("mid");
+        _allowableFormats.add("midi");
+        _allowableFormats.add("mpa");
+        _allowableFormats.add("mpc");
+        _allowableFormats.add("oga");
+        _allowableFormats.add("ogg");
+        _allowableFormats.add("opus");
+        _allowableFormats.add("wav");
+
 
         getmusicfiles(_rootdir);
 
@@ -82,6 +105,7 @@ public class SongsPickerAdapter extends BaseAdapter {
         prefs = PreferenceManager.getDefaultSharedPreferences(act);
 
     }//FilesAdapter
+
 
     public void getmusicfiles(String rootfolder) {
 
@@ -329,7 +353,7 @@ public class SongsPickerAdapter extends BaseAdapter {
     }//getView
 
 
-    private void PlaySong(View v) {
+    protected void PlaySong(View v) {
         String action = "PLAY_THIS_SONG";
         Intent in = new Intent(action);
 
@@ -603,12 +627,15 @@ public class SongsPickerAdapter extends BaseAdapter {
                 String root = fc.getParent();
                 if (root != null) {
                     // File froot = new File(root);
-                    if (!HandleRoot(root))
-                    {
+                   // if (!HandleRoot(root))
+                   // {
+                    if (root.equals( "/"))
+                        return false;
+
                         mfiles.clear();
                         getmusicfiles(root);
                         this.notifyDataSetChanged();
-                    }
+                   // }
 
                 } else {
                     return false;
@@ -624,14 +651,36 @@ public class SongsPickerAdapter extends BaseAdapter {
 
     public boolean HandleRoot(String root)
     {
-       // return false;
 
       if (!root.equals( "/"))
            return false;
 
-       String sdcard = "mnt";
-       String internalstorage = "storage";
+        mfiles.clear();
 
+        File f = new File("/");
+
+        for (File name: f.listFiles())
+        {
+            MusicFile mf  = new MusicFile("", name.getName(),name.getAbsolutePath(), 0);
+            mfiles.add(mf);
+        }
+
+        Collections.sort(mfiles);
+
+        this.notifyDataSetChanged();
+
+        return true;
+    }
+
+    public boolean HandleRoot1(String root)
+    {
+        // return false;
+
+        if (!root.equals( "/"))
+            return false;
+
+        String sdcard = "mnt";
+        String internalstorage = "storage";
 
         mfiles.clear();
 
@@ -642,7 +691,6 @@ public class SongsPickerAdapter extends BaseAdapter {
         mfiles.add(mfin);
 
         Collections.sort(mfiles);
-
 
         this.notifyDataSetChanged();
 
