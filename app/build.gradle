@@ -6,8 +6,8 @@ android {
         applicationId "com.ibo_android.sdmusicplayer"
         minSdkVersion 15
         targetSdkVersion 32
-        versionCode 38
-        versionName "2.0"
+        versionCode 40
+        versionName "2.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
