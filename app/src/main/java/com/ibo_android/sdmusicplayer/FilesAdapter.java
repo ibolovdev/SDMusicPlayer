@@ -4,6 +4,7 @@ import static android.app.PendingIntent.FLAG_IMMUTABLE;
 
 import java.util.ArrayList;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,7 @@ import android.content.Intent;
 
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +28,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -939,12 +942,13 @@ public class FilesAdapter extends BaseAdapter
 
 	public void restartVisualizer()
 	{
-
 		if(_MusicSrvBinder  != null)
 		{
 			if ( _MusicSrvBinder._mp != null && _MusicSrvBinder._mp.isPlaying())
 			{
-				startVisualiserThis(_MusicSrvBinder._mp.getAudioSessionId(), null);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+					startVisualiserThis(_MusicSrvBinder._mp.getAudioSessionId(), null);
+				}
 			}
 			else
 			{
@@ -955,13 +959,49 @@ public class FilesAdapter extends BaseAdapter
 
 	}//public void restartVisualizer()
 
-	public void startVisualiserThis(int AudioSessID, ViewHolder vh)
+	public boolean ShouldShowVisualizer()
 	{
 		boolean ShowVisualizer = prefs.getBoolean("ShowVisualizer", true);
 		if(!ShowVisualizer)
 		{
+			return false;
+		}
+
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+			return false;
+		}
+
+		boolean bRecordAudioNotGranted = ContextCompat.checkSelfPermission(_act.get(),
+				Manifest.permission.RECORD_AUDIO)
+				!= PackageManager.PERMISSION_GRANTED;
+
+		if (bRecordAudioNotGranted)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	public void startVisualiserThis(int AudioSessID, ViewHolder vh)
+	{
+		/*boolean ShowVisualizer = prefs.getBoolean("ShowVisualizer", true);
+		if(!ShowVisualizer)
+		{
 			return;
 		}
+
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
+			return;
+		}
+
+		boolean bRecordAudioNotGranted = ContextCompat.checkSelfPermission(_act.get(),
+				Manifest.permission.RECORD_AUDIO)
+				!= PackageManager.PERMISSION_GRANTED;*/
+
+		if (!ShouldShowVisualizer())
+			return;
+
 
 		if (!bShowWaveFormInList)
 		{
@@ -1051,9 +1091,9 @@ public class FilesAdapter extends BaseAdapter
 
 		pauseVisualiserThis(false);
 
+
 		visualiser = new Visualizer(AudioSessID);
 		visualiser.setEnabled(false);
-
 		visualiser.setDataCaptureListener(new MyOnDataCaptureListener(vh.mWform), Visualizer.getMaxCaptureRate(), true, false);
 		visualiser.setCaptureSize(CAPTURE_SIZE);
 		visualiser.setEnabled(true);
@@ -1064,6 +1104,9 @@ public class FilesAdapter extends BaseAdapter
 
 	public void pauseVisualiserThis(boolean bHandleRenderer)
 	{
+
+		if (!ShouldShowVisualizer())
+			return;
 
 		if (bHandleRenderer)
 		{
