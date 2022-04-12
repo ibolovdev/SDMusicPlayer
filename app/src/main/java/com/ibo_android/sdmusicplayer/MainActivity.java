@@ -198,7 +198,7 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 	public WaveformView waveformView;
 	private static final int CAPTURE_SIZE = 256;
 
-	private void play()
+/*	private void play()
 	{
 
 		Uri uri = Uri.parse(  Environment.getExternalStorageDirectory()
@@ -224,16 +224,16 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		visualiser.setCaptureSize(CAPTURE_SIZE);
 		visualiser.setEnabled(true);
 
-	}
+	}*/
 
-	public void startVisualiser(int AudioSessID)
+	/*public void startVisualiser(int AudioSessID)
 	{
         visualiser = new Visualizer(AudioSessID);
 		visualiser.setEnabled(false);
         visualiser.setDataCaptureListener(this, Visualizer.getMaxCaptureRate(), true, false);
         visualiser.setCaptureSize(CAPTURE_SIZE);
         visualiser.setEnabled(true);
-	}
+	}*/
 
 	/*@Override
 	protected void onPause() {
@@ -245,7 +245,7 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		super.onPause();
 	}*/
 
-	public void pauseVisualiser()
+	/*public void pauseVisualiser()
 	{
 
 		if (visualiser != null) {
@@ -254,7 +254,7 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 			visualiser.setDataCaptureListener(null, 0, false, false);
 		}
 
-	}
+	}*/
 
 
 	@Override
@@ -357,7 +357,9 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 
 			String path = getIntent().getData().getPath();
 
-			path = GetFile(path);
+			String lastpath =  getIntent().getData().getLastPathSegment();
+
+			path = GetFile(path,lastpath);
 
 			//BitmapCache bc = new BitmapCache();
 			FileNode fn = null;
@@ -437,7 +439,8 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 				{
 
 					String path = getIntent().getData().getPath();
-					path = GetFile(path);
+					String lastpath =  getIntent().getData().getLastPathSegment();
+					path = GetFile(path,lastpath);
 
 					FileNodeComposite MfilesComp = _FileSystemProvider.getmusicfilesFromContentProvider();
 					if (MfilesComp!= null)
@@ -1550,10 +1553,11 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 			 */
 
 			String path = intent.getData().getPath();
+			String lastpath = intent.getData().getLastPathSegment();
 			//String path = getIntent().getData().getPath();
 
 		//	File filePath = new File(this.getContentResolver().openFileDescriptor(getIntent().getData(), "r"));
-			path = GetFile(path);
+			path = GetFile(path,lastpath);
 			
 			//BitmapCache bc = new BitmapCache();
 			FileNode fn = null;
@@ -1614,16 +1618,16 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 		
 	}// handleIntent
 
-	private String GetFile(String path)
+	private String GetFile_WithOutColon(String path, String lastpath)
 	{
+		File f = new File(path);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-		{
+		if (f.exists())
+ 				return path;
 
-			String[] split = path.split(":");
 			String selection = "_id=?";
 			String[] selectionArgs = new String[]{
-			            split[1]};
+					lastpath};
 
 
 			Cursor cursor = this.getContentResolver().query(
@@ -1641,19 +1645,115 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 
 				String kk = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
 
-			 	return fullpath;
+				return fullpath;
+
+			}
+
+		return "";
+	}
+
+
+	private String GetFile(String path,String lastpath)
+	{
+
+		if (!path.contains(":"))
+			return GetFile_WithOutColon(path, lastpath);
+
+		String[] split = path.split(":");
+
+
+		String selectionID = "_id=?";
+		String[] selectionArgsID = new String[]{
+				split[1]};
+
+
+		Cursor cursorID = this.getContentResolver().query(
+				MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+				null,
+				selectionID,
+				selectionArgsID,
+				null);
+
+		while (cursorID.moveToNext())
+		{
+			String title = cursorID.getString(cursorID.getColumnIndex(MediaStore.Audio.Media.TITLE));
+
+			String fullpath = cursorID.getString(cursorID.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+			String kk = cursorID.getString(cursorID.getColumnIndex(MediaStore.Audio.Media._ID));
+
+			return fullpath;
+
+		}
+
+
+		String selectionPath = "_data Like ? ";
+		String[] selectionArgsPath = new String[]{
+				"%" + split[1] + "%"};
+
+
+		Cursor cursorPath = this.getContentResolver().query(
+				MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+				null,
+				selectionPath,
+				selectionArgsPath,
+				null);
+
+		while (cursorPath.moveToNext())
+		{
+			String title = cursorPath.getString(cursorPath.getColumnIndex(MediaStore.Audio.Media.TITLE));
+
+			String fullpath = cursorPath.getString(cursorPath.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+			String kk = cursorPath.getString(cursorPath.getColumnIndex(MediaStore.Audio.Media._ID));
+
+			return fullpath;
+
+		}
+
+		return "";
+	}
+
+	private String GetFile_Old(String path)
+	{
+		String[] split = path.split(":");
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+		{
+
+
+			String selection = "_id=?";
+			String[] selectionArgs = new String[]{
+					split[1]};
+
+
+			Cursor cursor = this.getContentResolver().query(
+					MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+					null,
+					selection,
+					selectionArgs,
+					null);
+
+			while (cursor.moveToNext())
+			{
+				String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+
+				String fullpath = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+
+				String kk = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+
+				return fullpath;
 
 			}
 
 		}
 		else
 		{
-			 return path;
+			return path;
 		}
 
-			return "";
+		return "";
 	}
-
 
 
 	@Override
