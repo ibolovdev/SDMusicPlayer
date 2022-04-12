@@ -1034,11 +1034,61 @@ public class FilesAdapter extends BaseAdapter
 
 //		pauseVisualiserThis(false);
 
-		visualiser = new Visualizer(AudioSessID);
-		visualiser.setEnabled(false);
-		visualiser.setDataCaptureListener(new MyOnDataCaptureListener(_act.get().waveformView), Visualizer.getMaxCaptureRate(), true, false);
-		visualiser.setCaptureSize(CAPTURE_SIZE);
-		visualiser.setEnabled(true);
+
+		try
+		{
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				visualiser = new Visualizer(AudioSessID);
+				visualiser.setEnabled(false);
+				visualiser.setDataCaptureListener(new MyOnDataCaptureListener(_act.get().waveformView), Visualizer.getMaxCaptureRate(), true, false);
+				visualiser.setCaptureSize(CAPTURE_SIZE);
+				visualiser.setEnabled(true);
+			}
+
+		}
+		catch (UnsupportedOperationException e)//throw (new UnsupportedOperationException("Effect library not loaded"));
+		{
+			_act.get().waveformView.setRenderer(null);
+			_act.get().waveformView.invalidate();
+			if (visualiser != null)
+			{
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+
+					visualiser.setEnabled(false);
+					visualiser.release();
+					visualiser.setDataCaptureListener(null, 0, false, false);
+
+				}
+			}
+
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean("ShowVisualizer",false) ;
+
+			editor.commit();
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+
+			if (visualiser != null)
+			{
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+
+						visualiser.setEnabled(false);
+						visualiser.release();
+						visualiser.setDataCaptureListener(null, 0, false, false);
+
+				}
+			}
+
+		}
+
+
+
+
 	}
 
 
@@ -1092,11 +1142,61 @@ public class FilesAdapter extends BaseAdapter
 		pauseVisualiserThis(false);
 
 
-		visualiser = new Visualizer(AudioSessID);
-		visualiser.setEnabled(false);
-		visualiser.setDataCaptureListener(new MyOnDataCaptureListener(vh.mWform), Visualizer.getMaxCaptureRate(), true, false);
-		visualiser.setCaptureSize(CAPTURE_SIZE);
-		visualiser.setEnabled(true);
+		try
+		{
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				visualiser = new Visualizer(AudioSessID);
+				visualiser.setEnabled(false);
+				visualiser.setDataCaptureListener(new MyOnDataCaptureListener(vh.mWform), Visualizer.getMaxCaptureRate(), true, false);
+				visualiser.setCaptureSize(CAPTURE_SIZE);
+				visualiser.setEnabled(true);
+			}
+
+		}
+		catch (UnsupportedOperationException e)
+		{
+			_act.get().waveformView.setRenderer(null);
+			_act.get().waveformView.invalidate();
+			if (visualiser != null)
+			{
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+
+					visualiser.setEnabled(false);
+					visualiser.release();
+					visualiser.setDataCaptureListener(null, 0, false, false);
+
+				}
+			}
+
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean("ShowVisualizer",false) ;
+
+			editor.commit();
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+
+			if (visualiser != null)
+			{
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+
+					visualiser.setEnabled(false);
+					visualiser.release();
+					visualiser.setDataCaptureListener(null, 0, false, false);
+
+				}
+			}
+
+		}
+
+
+
+
+
 	}
 
 
@@ -1120,14 +1220,43 @@ public class FilesAdapter extends BaseAdapter
 		}
 
 
+		try
+		{
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				visualiser.setEnabled(false);
+				visualiser.release();
+				visualiser.setDataCaptureListener(null, 0, false, false);
+			}
 
-		if (visualiser != null) {
-			visualiser.setEnabled(false);
-			visualiser.release();
-			visualiser.setDataCaptureListener(null, 0, false, false);
+		}
+		catch (Exception e)
+		{
+			_act.get().waveformView.setRenderer(null);
+			_act.get().waveformView.invalidate();
+
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean("ShowVisualizer",false) ;
+
+			editor.commit();
+		}
+		finally
+		{
+
+			/*if (visualiser != null)
+			{
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+
+					visualiser.setEnabled(false);
+					visualiser.release();
+					visualiser.setDataCaptureListener(null, 0, false, false);
+
+				}
+			}*/
+
 		}
 
-	}
+
+	}//pauseVisualiserThis
 				
 				public View getView(int pos, View v, ViewGroup vg) {
 						ViewHolder holder=null;
