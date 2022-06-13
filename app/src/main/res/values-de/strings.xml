@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="title_activity_directory_chooser">Ordnerauswahl</string>
+    <string name="ok">ΟΚ</string>
+    <string name="cancel">Rückwarts</string>
+    <string name="title_activity_songs_picker">Lieder auswahl</string>
+    <string name="add">Einfügen</string>
+    <string name="remove">Abnehmen</string>
+    <string name="ChooseDir">Ordnerauswahl</string>
+    <string name="RemoveAll">Alle entfernen</string>
+    <string name="Add">Einfügen</string>
+    <string name="LoadPlaylist">Listes Laden</string>
+    <string name="SavePlaylist">Listes Speichern</string>
+    <string name="DeleteAll">Alle löschen</string>
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="InitialDir">Anfänglicher Ordner</string>
+    <string name="menu_delete">Löschen</string>
+    <string name="menu_properties">Eigenschaften</string>
+    <string name="CheckAll">Alle ja</string>
+    <string name="EnterPlaylistName">Geben Sie einen Listennamen ein</string>
+    <string name="AddToPlaylist">Zur Liste hinzufügen</string>
+    <string name="RemoveFromPlaylist">Aus Liste entfernen</string>
+    <string name="ClearScreen">Bildschirms abwischen</string>
+    <string name="UnCheckAll">Alle nein</string>
+    <string name="DeleteListItem">Datei löschen</string>
+    <string name="RemoveListItem">Aus Liste entfernen</string>
+    <string name="PlayInRandom">Zufällige Wiedergabe</string>
+    <string name="repeat">Wiederholung</string>
+    <string name="menu">Menü</string>
+    <string name="Info">Informationen</string>
+    <string name="title_activity_load_playlist">Liste laden</string>
+    <string name="title_activity_save_playlist">Liste speichern</string>
+    <string name="EnterPlaylist">Listeneintrag</string>
+    <string name="Savingplaylist">Liste speichern</string>
+
+    <string name="repeatON">Wiederholung ON</string>
+    <string name="repeatOFF">Wiederholung OFF</string>
+    <string name="noinfo">Keine Informationen</string>
+    <string name="UP">Über</string>
+
+    <string name="search_songs">Suchen</string>
+    <string name="search_hint">Suche ein Lied</string>
+    <string name="no_results">Keine Ergebnisse gefunden</string>
+    <string name="title_activity_results_picker">Ergebnisse</string>
+
+    <string name="screen_setting">Bildschirmmodus</string>
+
+    <string name="delete_playlists">Listen löschen</string>
+    <string name="title_activity_delete_playlists">Listen löschen</string>
+    <string name="delete_pl_delete_bt">Löschen</string>
+    <string name="delete_pl_cancel_bt">Rückwarts</string>
+
+    <string name="exit">Ausgang</string>
+
+    <string name="title_activity_number_picker">Wählen Sie eine Größe</string>
+    <string name="FontSize">Schriftart Größe</string>
+    <string name="FontSizeDefault">12</string>
+    <string name="back">Rückwarts</string>
+
+    <string name="setting_theme">Themenauswahl</string>
+
+    <string name="show_songs_images">Lied Ikone Ansicht</string>
+
+    <string name="choose_seek_button_duration">Suche Knopf Dauer Auswahl</string>
+    <string name="title_activity_number_picker_time_activity">Suche Knopf Dauer Auswahl</string>
+
+    <string name="bookmark_position">Positionmarkierung</string>
+    <string name="bookmark_go_title">gehe zur Markierung</string>
+    <string name="bookmark_erase">Markierungen löschen</string>
+
+
+    <string name="general">Allgemeine</string>
+    <string name="userinterface">Benutzeroberfläche</string>
+    <string name="playback">Wiedergabe</string>
+    <string name="settings_SelectorSize">Selektorgröße</string>
+    <string name="sv">Visualizer Darstellung</string>
+</resources>
