@@ -1070,24 +1070,6 @@ public class FilesAdapter extends BaseAdapter
 		{
 			throw e;
 		}
-		finally
-		{
-
-			if (visualiser != null)
-			{
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-
-						visualiser.setEnabled(false);
-						visualiser.release();
-						visualiser.setDataCaptureListener(null, 0, false, false);
-
-				}
-			}
-
-		}
-
-
-
 
 	}
 
@@ -1177,25 +1159,6 @@ public class FilesAdapter extends BaseAdapter
 		{
 			throw e;
 		}
-		finally
-		{
-
-			if (visualiser != null)
-			{
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-
-					visualiser.setEnabled(false);
-					visualiser.release();
-					visualiser.setDataCaptureListener(null, 0, false, false);
-
-				}
-			}
-
-		}
-
-
-
-
 
 	}
 
@@ -1231,13 +1194,13 @@ public class FilesAdapter extends BaseAdapter
 		}
 		catch (Exception e)
 		{
-			_act.get().waveformView.setRenderer(null);
+			/*_act.get().waveformView.setRenderer(null);
 			_act.get().waveformView.invalidate();
 
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putBoolean("ShowVisualizer",false) ;
 
-			editor.commit();
+			editor.commit();*/
 		}
 		finally
 		{
