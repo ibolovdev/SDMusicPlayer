@@ -743,7 +743,10 @@ public class MainActivity extends Activity implements NoticeDialogListener, andr
 							if (fromUser)
 								if (MusicSrvBinder._mp != null) {
 									MusicSrvBinder._mp.seekTo(progress);
-									MusicSrvBinder._nowplaying.CurrentPosition = progress;
+									if (MusicSrvBinder._nowplaying != null)
+									{
+										MusicSrvBinder._nowplaying.CurrentPosition = progress;
+									}
 									seekBar.setProgress(progress);
 									updateSeekBar(progress);
 								}
